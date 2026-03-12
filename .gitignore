@@ -127,4 +127,4 @@ dmypy.json
 # My Project
 _doc/
 _data/
-.xmind
+*.xmind
