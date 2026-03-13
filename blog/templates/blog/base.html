@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Мой Блог{% endblock %}</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            background: #f4f4f4;
+            color: #333;
+        }
+        header {
+            background: #35424a;
+            color: #fff;
+            padding: 1rem 0;
+            margin-bottom: 2rem;
+        }
+        header h1 {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 10px 20px;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin-right: 15px;
+            padding: 5px 10px;
+            border-radius: 3px;
+        }
+        nav a:hover { background: #e8491d; }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .messages { list-style: none; margin-bottom: 1rem; }
+        .messages li {
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            border-radius: 3px;
+        }
+        .messages .success {
+            background: #d4edda;
+            color: #155724;
+        }
+        .messages .error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .post-card {
+            background: #fff;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .post-card h2 a {
+            color: #35424a;
+            text-decoration: none;
+        }
+        .post-card h2 a:hover { color: #e8491d; }
+        .post-meta {
+            color: #777;
+            font-size: 0.9rem;
+            margin: 10px 0;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #e8491d;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 3px;
+            border: none;
+            cursor: pointer;
+        }
+        .btn:hover { background: #333; }
+        .btn-secondary { background: #35424a; }
+        .btn-danger { background: #dc3545; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+        .form-group textarea {
+            min-height: 200px;
+            resize: vertical;
+        }
+        .pagination {
+            margin: 20px 0;
+            text-align: center;
+        }
+        .pagination a,
+        .pagination span {
+            display: inline-block;
+            padding: 8px 12px;
+            margin: 0 3px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            text-decoration: none;
+            color: #35424a;
+        }
+        .pagination .current {
+            background: #e8491d;
+            color: #fff;
+        }
+        .comment {
+            background: #f9f9f9;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 3px solid #e8491d;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            background: #35424a;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>📝 Мой Блог на Django</h1>
+    </header>
+
+    <nav>
+        <a href="{% url 'blog:post_list' %}">Главная</a>
+        {% if user.is_authenticated %}
+            <a href="{% url 'blog:post_create' %}">Создать пост</a>
+            <span style="color: #ccc;">|</span>
+            <span style="color: #fff;">{{ user.username }}</span>
+            <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" style="background: none; border: none; color: #e8491d; cursor: pointer;">Выйти</button>
+            </form>
+        {% else %}
+            <a href="{% url 'login' %}">Войти</a>
+        {% endif %}
+    </nav>
+
+    <div class="container">
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li class="{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Мой Блог. Создано на Django.</p>
+    </footer>
+</body>
+</html>
