@@ -1,0 +1,65 @@
+{% extends 'blog/base.html' %} {% block title %}{{ title }} - Мой Блог{%
+endblock %} {% block content %}
+<div
+  class="post-form"
+  style="
+    background: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    max-width: 800px;
+    margin: 0 auto;
+  "
+>
+  <h2 style="margin-bottom: 20px">{{ title }}</h2>
+
+  <form method="post">
+    {% csrf_token %} {% if form.errors %}
+    <div
+      style="
+        background: #f8d7da;
+        color: #721c24;
+        padding: 15px;
+        border-radius: 3px;
+        margin-bottom: 20px;
+      "
+    >
+      <strong>⚠️ Ошибки:</strong>
+      <ul style="margin: 10px 0 0 20px">
+        {% for field in form %} {% for error in field.errors %}
+        <li>{{ field.label }}: {{ error }}</li>
+        {% endfor %} {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+
+    <div class="form-group">
+      <label for="{{ form.title.id_for_label }}">{{ form.title.label }}:</label>
+      {{ form.title }}
+    </div>
+
+    <div class="form-group">
+      <label for="{{ form.content.id_for_label }}"
+        >{{ form.content.label }}:</label
+      >
+      {{ form.content }}
+    </div>
+
+    <div class="form-group">
+      <label for="{{ form.published.id_for_label }}"
+        >{{ form.published.label }}:</label
+      >
+      {{ form.published }}
+    </div>
+
+    <div style="margin-top: 20px">
+      <button type="submit" class="btn">Сохранить</button>
+      <a
+        href="{% if post %}{% url 'blog:post_detail' pk=post.pk %}{% else %}{% url 'blog:post_list' %}{% endif %}"
+        class="btn btn-secondary"
+        style="margin-left: 10px"
+        >Отмена</a
+      >
+    </div>
+  </form>
+</div>
+{% endblock %}
