@@ -1,0 +1,42 @@
+{% extends 'blog/base.html' %} {% block title %}Удаление поста - Мой Блог{%
+endblock %} {% block content %}
+<div
+  class="delete-confirmation"
+  style="
+    background: #fff;
+    padding: 30px;
+    border-radius: 5px;
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+  "
+>
+  <h2 style="color: #dc3545; margin-bottom: 20px">🗑️ Удаление поста</h2>
+
+  <p style="font-size: 1.1rem; margin-bottom: 15px">
+    Вы уверены, что хотите удалить пост?
+  </p>
+
+  <p
+    style="
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 3px;
+      margin-bottom: 25px;
+    "
+  >
+    <strong>«{{ post.title }}»</strong>
+  </p>
+
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Да, удалить</button>
+    <a
+      href="{% url 'blog:post_detail' pk=post.pk %}"
+      class="btn btn-secondary"
+      style="margin-left: 10px"
+      >Отмена</a
+    >
+  </form>
+</div>
+{% endblock %}
