@@ -1,0 +1,48 @@
+{% extends 'blog/base.html' %} {% block title %}Список постов - Мой Блог{%
+endblock %} {% block content %}
+<div class="posts-list">
+  <h2 style="margin-bottom: 20px">📄 Все посты</h2>
+
+  {% if page_obj %} {% for post in page_obj %}
+  <article class="post-card">
+    <h2>
+      <a href="{% url 'blog:post_detail' pk=post.pk %}">{{ post.title }}</a>
+    </h2>
+
+    <div class="post-meta">
+      <span>✍️ Автор: <strong>{{ post.author.username }}</strong></span>
+      <span> | </span>
+      <span>📅 {{ post.created_at|date:"d.m.Y H:i" }}</span>
+    </div>
+
+    <p>{{ post.content|truncatewords:30 }}</p>
+
+    <a href="{% url 'blog:post_detail' pk=post.pk %}" class="btn">
+      Читать далее →
+    </a>
+  </article>
+  {% endfor %}
+
+  <div class="pagination">
+    {% if page_obj.has_previous %}
+    <a href="?page=1">« Первая</a>
+    <a href="?page={{ page_obj.previous_page_number }}">← Пред.</a>
+    {% endif %}
+
+    <span class="current">
+      Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+    </span>
+
+    {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}">След. →</a>
+    <a href="?page={{ page_obj.paginator.num_pages }}">Последняя »</a>
+    {% endif %}
+  </div>
+
+  {% else %}
+  <p style="text-align: center; padding: 40px">
+    Постов нет. <a href="{% url 'blog:post_create' %}">Создайте первый!</a>
+  </p>
+  {% endif %}
+</div>
+{% endblock %}
