@@ -1,10 +1,13 @@
-{% extends 'blog/base.html' %} {% block title %}{{ post.title }} - Мой Блог{%
-endblock %} {% block content %}
+{% extends 'blog/base.html' %}
+{% block title %}
+{{ post.title }} - Мой Блог{% endblock %}
+{% block content %}
+
 <article class="post-detail">
-  <header style="margin-bottom: 20px;">
+  <header style="margin-bottom: 20px">
     <h1>{{ post.title }}</h1>
 
-    <div class="post-meta" style="margin: 15px 0;">
+    <div class="post-meta" style="margin: 15px 0">
       <span>✍️ Автор: <strong>{{ post.author.username }}</strong></span>
       <span> | </span>
       <span>📅 {{ post.created_at|date:"d.m.Y H:i" }}</span>
@@ -13,28 +16,28 @@ endblock %} {% block content %}
 
   <div
     class="post-content"
-    style="background: #fff; padding: 20px; border-radius: 5px;"
+    style="background: #fff; padding: 20px; border-radius: 5px"
   >
     {{ post.content|linebreaks }}
   </div>
 
   {% if user == post.author %}
-  <div style="margin-top: 20px;">
+  <div style="margin-top: 20px">
     <a href="{% url 'blog:post_edit' pk=post.pk %}" class="btn"
       >✏️ Редактировать</a
     >
     <a
       href="{% url 'blog:post_delete' pk=post.pk %}"
       class="btn btn-danger"
-      style="margin-left: 10px;"
+      style="margin-left: 10px"
       >🗑️ Удалить</a
     >
   </div>
   {% endif %}
 </article>
 
-<section class="comments" style="margin-top: 40px;">
-  <h2 style="margin-bottom: 20px;">💬 Комментарии ({{ comments.count }})</h2>
+<section class="comments" style="margin-top: 40px">
+  <h2 style="margin-bottom: 20px">💬 Комментарии ({{ comments.count }})</h2>
 
   {% if comments %}
   <div class="comments-list">
@@ -51,14 +54,19 @@ endblock %} {% block content %}
     {% endfor %}
   </div>
   {% else %}
-  <p style="color: #777;">Комментариев нет. Будьте первым!</p>
+  <p style="color: #777">Комментариев нет. Будьте первым!</p>
   {% endif %} {% if user.is_authenticated %}
   <div
     class="comment-form"
-    style="margin-top: 30px; background: #fff; padding: 20px; border-radius: 5px;"
+    style="
+      margin-top: 30px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 5px;
+    "
   >
     <h3>Добавить комментарий</h3>
-    <form method="post" style="margin-top: 15px;">
+    <form method="post" style="margin-top: 15px">
       {% csrf_token %}
       <div class="form-group">
         <label for="{{ comment_form.text.id_for_label }}">Текст:</label>
@@ -68,7 +76,7 @@ endblock %} {% block content %}
     </form>
   </div>
   {% else %}
-  <p style="margin-top: 20px;">
+  <p style="margin-top: 20px">
     <a href="{% url 'login' %}?next={{ request.path }}">Войдите</a>, чтобы
     оставить комментарий.
   </p>

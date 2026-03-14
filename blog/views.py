@@ -61,7 +61,7 @@ def post_create(request):
             post.author = request.user
             post.save()
             messages.success(request, 'Пост создан!')
-            return redirect('post_detail', pk=post.id)
+            return redirect('blog:post_detail', pk=post.id)
     else:
         form = PostForm()
 
@@ -85,7 +85,7 @@ def post_edit(request, pk):
             post.updated_at = timezone.now()
             post.save()
             messages.success(request, 'Пост обновлён!')
-            return redirect('post_detail', pk=post.id)
+            return redirect('blog:post_detail', pk=post.id)
     else:
         form = PostForm(instance=post)
 
@@ -100,7 +100,7 @@ def post_delete(request, pk):
 
     if post.author != request.user:
         messages.error(request, 'Можно удалять только свои посты.')
-        return redirect('post_detail', pk=pk)
+        return redirect('blog:post_detail', pk=pk)
 
     if request.method == 'POST':
         post.delete()
