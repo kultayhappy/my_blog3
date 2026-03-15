@@ -38,7 +38,7 @@ def post_detail(request, pk):
             comment.author = request.user
             comment.save()
             messages.success(request, 'Комментарий добавлен!')
-            return redirect('post_detail', pk=post.id)
+            return redirect('blog:post_detail', pk=post.id)
     else:
         form = CommentForm()
 
